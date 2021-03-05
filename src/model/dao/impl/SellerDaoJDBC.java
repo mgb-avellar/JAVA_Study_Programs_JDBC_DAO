@@ -77,25 +77,14 @@ public class SellerDaoJDBC implements SellerDAO {
                 Primeiro, instanciaremos um departamento e setamos as informações dele
                  */
 
-                Department dep = new Department();
-
-                dep.setDepartmentID(rs.getInt("DepartmentId"));
-                dep.setDepartmentName(rs.getString("DepName"));
+                Department dep = instantiateDepartment(rs);
 
                 /*
                 Agora precisamos instanciar um vendedor e suas informações, incluindo a associação
                 com o departamento que instanciamos acima.
                  */
 
-                Seller seller = new Seller();
-
-                seller.setSellerID(rs.getInt("Id"));
-                seller.setSellerName(rs.getString("Name"));
-                seller.setSellerEmail(rs.getString("Email"));
-                seller.setSellerBaseSalary(rs.getDouble("BaseSalary"));
-                seller.setSellerBirthDate(rs.getDate("BirthDate"));
-
-                seller.setSellerDepartment(dep);  // Aqui está a associação com o departamento!!
+                Seller seller = instantiateSeller(rs, dep);
 
                 return seller;
             }
@@ -113,6 +102,30 @@ public class SellerDaoJDBC implements SellerDAO {
             DB.closeResultSet(rs);
         }
 
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+
+        Seller seller = new Seller();
+
+        seller.setSellerID(rs.getInt("Id"));
+        seller.setSellerName(rs.getString("Name"));
+        seller.setSellerEmail(rs.getString("Email"));
+        seller.setSellerBaseSalary(rs.getDouble("BaseSalary"));
+        seller.setSellerBirthDate(rs.getDate("BirthDate"));
+
+        seller.setSellerDepartment(dep);  // Aqui está a associação com o departamento!!
+
+        return seller;
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+
+        Department dep = new Department();
+
+        dep.setDepartmentID(rs.getInt("DepartmentId"));
+        dep.setDepartmentName(rs.getString("DepName"));
+        return dep;
     }
 
     @Override
