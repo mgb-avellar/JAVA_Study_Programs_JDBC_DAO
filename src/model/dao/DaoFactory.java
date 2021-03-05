@@ -1,6 +1,7 @@
 package model.dao;
 
 import db.DB;
+import model.dao.impl.DepartmentDaoJDBC;
 import model.dao.impl.SellerDaoJDBC;
 
 public class DaoFactory {
@@ -19,5 +20,10 @@ public class DaoFactory {
         mas internamente instancia uma implementação.
         Assim, não precisamos expor a implementação, apenas a interface.
          */
+    }
+
+    public static DepartmentDAO createDepartmentDAO () {
+
+        return new DepartmentDaoJDBC(DB.getConnection());
     }
 }
