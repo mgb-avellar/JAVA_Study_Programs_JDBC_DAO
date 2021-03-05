@@ -1,5 +1,6 @@
 package model.dao;
 
+import db.DB;
 import model.dao.impl.SellerDaoJDBC;
 
 public class DaoFactory {
@@ -10,7 +11,8 @@ public class DaoFactory {
 
     public static SellerDAO createSellerDAO () {
 
-        return new SellerDaoJDBC();
+        return new SellerDaoJDBC(DB.getConnection());  // Depois da implementação de findById em SellerDaoJDBC
+                                                       //   precisamos passar o DB.getConnection() aqui
 
         /*
         O que acontece é que o método retorna um objeto interface SellerDAO,
