@@ -98,12 +98,12 @@ public class Seller implements Serializable {
     @Override
     public String toString() {
         return "Seller [" +
-                "sellerID=" + sellerID +
-                ", sellerName='" + sellerName + '\'' +
-                ", sellerEmail='" + sellerEmail + '\'' +
-                ", sellerBirthDate=" + sellerBirthDate +
-                ", sellerBaseSalary=" + sellerBaseSalary +
-                ", sellerDepartment=" + sellerDepartment +
+                "sellerID: " + sellerID +
+                ", sellerName: '" + sellerName + '\'' +
+                ", sellerEmail: '" + sellerEmail + '\'' +
+                ", sellerBirthDate: " + sellerBirthDate +
+                ", sellerBaseSalary: " + sellerBaseSalary +
+                ", sellerDepartment: " + sellerDepartment +
                 ']';
     }
 }
