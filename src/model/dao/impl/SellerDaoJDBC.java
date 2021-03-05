@@ -10,7 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDAO {
 
@@ -131,5 +134,73 @@ public class SellerDaoJDBC implements SellerDAO {
     @Override
     public List<Seller> findAll() {
         return null;
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+
+            st = connection.prepareStatement(
+                    "SELECT seller.*, department.Name as DepName " +
+                            "FROM seller INNER JOIN department " +
+                            "ON seller.DepartmentId = department.Id " +
+                            "WHERE DepartmentId = ? " +
+                            "ORDER BY Name "
+            );
+
+            st.setInt(1, department.getDepartmentID());
+            rs = st.executeQuery();
+
+            List<Seller> sellerList = new ArrayList<>();
+
+            /*
+            É importante ter a noção de que sem tomar muito cuidado com o código,
+            posso instanciar várias vezes o departamento, como discutido na aula.
+            Para evitar isso, criaremos um mapa, que usaremos dentro do bloco de
+            repetição abaixo.
+             */
+
+            Map<Integer, Department> map = new HashMap<>();
+
+            while ( rs.next() ) {     // while em vez de 'if' porque posso ter mais de um vendedor no departamento
+
+                /*
+                A linha de comando abaixo busca no mapa criado se já há algum departamento
+                com o id requerido. Se não houver, o map.get(...) retorna 'null' e então
+                podemos instanciar o departamento; se houver, não faremos nova instância.
+                 */
+                Department dep = map.get(rs.getInt("DepartmentId"));
+
+                if (dep == null) {
+
+                    dep = instantiateDepartment(rs); // Instancio department
+                    map.put(rs.getInt("DepartmentId"), dep); // jogo a instância no mapa
+                }
+
+                Seller seller = instantiateSeller(rs, dep);
+
+                sellerList.add(seller);
+            }
+            return sellerList;
+
+        }
+        catch (SQLException e) {
+
+            throw new DbException(e.getMessage());
+        }
+        finally {
+
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+
+
+
+
+
     }
 }
