@@ -5,6 +5,7 @@ import model.entities.Seller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -14,6 +15,8 @@ public class Main {
         Posso instanciar o SellerDao agora, mas note que sem o 'new SellerDAO (...)'
         Agora, meu método não precisa saber da implementação.
          */
+
+        Scanner sc = new Scanner(System.in);
 
         SellerDAO sellerDAO = DaoFactory.createSellerDAO();
 
@@ -43,7 +46,8 @@ public class Main {
         System.out.println();
         System.out.println("=== TEST 4: seller insert =====");
         //Seller newSeller = new Seller(null, "Bombs", "bombs@gmail.com", new Date(), 9875.54,department);
-        Seller newSeller = new Seller(null, "John Wick", "john@gmail.com", new Date(), 9875.54,department);
+        //Seller newSeller = new Seller(null, "John Wick", "john@gmail.com", new Date(), 9875.54,department);
+        Seller newSeller = new Seller(null, "Joan Hart", "joan@gmail.com", new Date(), 9875.54,department);
         sellerDAO.insert(newSeller);
         System.out.println("Inserted! New id = " + newSeller.getSellerID());
 
@@ -54,5 +58,13 @@ public class Main {
         sellerDAO.update(newSeller);
         System.out.println("Update completed.");
 
+        System.out.println();
+        System.out.println("=== TEST 6: seller delete =====");
+        System.out.print("Enter with an Id: ");
+        int id = sc.nextInt();
+        sellerDAO.deleteById(id);
+        System.out.println("Delete completed.");
+
+        sc.close();
     }
 }
