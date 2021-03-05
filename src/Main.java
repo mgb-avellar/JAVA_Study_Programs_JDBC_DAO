@@ -39,13 +39,20 @@ public class Main {
             System.out.println(s);
         }
 
+
         System.out.println();
         System.out.println("=== TEST 4: seller insert =====");
-        Seller newSeller = new Seller(null, "Bombs", "bombs@gmail.com", new Date(), 9875.54,department);
+        //Seller newSeller = new Seller(null, "Bombs", "bombs@gmail.com", new Date(), 9875.54,department);
+        Seller newSeller = new Seller(null, "John Wick", "john@gmail.com", new Date(), 9875.54,department);
         sellerDAO.insert(newSeller);
         System.out.println("Inserted! New id = " + newSeller.getSellerID());
 
-
+        System.out.println();
+        System.out.println("=== TEST 5: seller update =====");
+        newSeller = sellerDAO.findById(13);
+        newSeller.setSellerName("Alex 'Bombs' Kidd ");
+        sellerDAO.update(newSeller);
+        System.out.println("Update completed.");
 
     }
 }
